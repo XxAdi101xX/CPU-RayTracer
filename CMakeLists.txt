@@ -16,6 +16,7 @@ set ( SRC
     src/hittable.h
     src/sphere.h
     src/hittable_list.h
+    src/camera.h
     src/main.cpp
 )
 
