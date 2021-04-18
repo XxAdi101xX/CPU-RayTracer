@@ -9,7 +9,13 @@ project ( RayTracer
 set ( CMAKE_CXX_STANDARD 11 )
 
 set ( SRC
+    src/utility.h
     src/vec3.h
+    src/ray.h
+    src/color.h
+    src/hittable.h
+    src/sphere.h
+    src/hittable_list.h
     src/main.cpp
 )
 
