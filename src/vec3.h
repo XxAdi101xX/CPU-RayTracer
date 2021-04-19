@@ -51,6 +51,12 @@ class vec3 {
         inline static vec3 random(double min, double max) {
             return vec3(random_double(min,max), random_double(min,max), random_double(min,max));
         }
+
+        bool near_zero() const {
+            // Return true if the vector is close to zero in all dimensions.
+            const double s = 1e-8;
+            return (fabs(e[0]) < s) && (fabs(e[1]) < s) && (fabs(e[2]) < s);
+        }
     private:
         double e[3];
 };
@@ -105,6 +111,7 @@ inline vec3 unit_vector(vec3 v) {
     return v / v.length();
 }
 
+//  Used for lazy lambertian that has more samples be near the normal rather than a universal distribution
 vec3 random_in_unit_sphere() {
     while (true) {
         vec3 p = vec3::random(-1,1);
@@ -113,6 +120,21 @@ vec3 random_in_unit_sphere() {
     }
 }
 
+// Used for true lambertian defuse
 vec3 random_unit_vector() {
     return unit_vector(random_in_unit_sphere());
+}
+
+// Inituitve approach of have a uniform scatter direction for all angles away from the hit point, with no dependence on the angle from the normal.
+// This was used for before lambertian was widely adopted
+vec3 random_in_hemisphere(const vec3& normal) {
+    vec3 in_unit_sphere = random_in_unit_sphere();
+    if (dot(in_unit_sphere, normal) > 0.0) // In the same hemisphere as the normal
+        return in_unit_sphere;
+    else
+        return -in_unit_sphere;
+}
+
+vec3 reflect(const vec3& v, const vec3& n) {
+    return v - 2*dot(v,n)*n;
 }
