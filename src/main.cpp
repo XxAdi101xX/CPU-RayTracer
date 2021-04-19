@@ -7,10 +7,18 @@
 #include <iostream>
 
 // conducting a lerp (linear interpolation) between white and blue
-color ray_color(const ray& r, const hittable& world) {
+color ray_color(const ray& r, const hittable& world, int depth) {
     hit_record rec;
-    if (world.hit(r, 0, infinity, rec)) {
-        return 0.5 * (rec.normal + color(1,1,1));
+
+    // If we've hit our recursive depth limit, we haven't hit any light for this ray so we terminate
+    if (depth <= 0) {
+        return color(0.0, 0.0, 0.0);
+    }
+
+    // 0.001 is used instead of 0 to avoid the shadow acne problem and account for rounding errors
+    if (world.hit(r, 0.001, infinity, rec)) {
+        point3 target = rec.p + rec.normal + random_unit_vector();
+        return 0.5 * ray_color(ray(rec.p, target - rec.p), world, depth - 1);
     }
     vec3 unit_direction = unit_vector(r.direction());
     auto t = 0.5*(unit_direction.y() + 1.0);
@@ -22,7 +30,8 @@ int main() {
     const double aspect_ratio = 16.0 / 9.0;
     const int image_width = 400;
     const int image_height = static_cast<int>(image_width / aspect_ratio);
-    const int samples_per_pixel = 100;
+    const int samples_per_pixel = 50; // Tune these
+    const int max_ray_depth = 25; // Tune these
 
     // World
     hittable_list world;
@@ -44,7 +53,7 @@ int main() {
                 double u = (column + random_double()) / (image_width-1);
                 double v = (row + random_double()) / (image_height-1);
                 ray r = cam.get_ray(u, v);
-                pixel_color += ray_color(r, world);
+                pixel_color += ray_color(r, world, max_ray_depth);
             }
             write_color(std::cout, pixel_color, samples_per_pixel);
         }
