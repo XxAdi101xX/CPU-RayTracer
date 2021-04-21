@@ -15,6 +15,7 @@ set ( SRC
     src/color.h
     src/hittable.h
     src/sphere.h
+    src/moving_sphere.h
     src/hittable_list.h
     src/camera.h
     src/main.cpp
