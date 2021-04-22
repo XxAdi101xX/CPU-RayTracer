@@ -18,6 +18,8 @@ set ( SRC
     src/moving_sphere.h
     src/hittable_list.h
     src/camera.h
+    src/aabb.h
+    src/bvh.h
     src/main.cpp
 )
 

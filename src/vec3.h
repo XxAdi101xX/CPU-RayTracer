@@ -57,7 +57,7 @@ class vec3 {
             const double s = 1e-8;
             return (fabs(e[0]) < s) && (fabs(e[1]) < s) && (fabs(e[2]) < s);
         }
-    private:
+    public:
         double e[3];
 };
 
