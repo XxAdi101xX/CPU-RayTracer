@@ -33,11 +33,13 @@ color ray_color(const ray& r, const hittable& world, int depth) {
 hittable_list random_scene() {
     hittable_list world;
 
-    auto ground_material = std::make_shared<lambertian>(color(0.5, 0.5, 0.5));
-    world.add(std::make_shared<sphere>(point3(0,-1000,0), 1000, ground_material));
+    // auto ground_material = std::make_shared<lambertian>(color(0.5, 0.5, 0.5));
+    // world.add(std::make_shared<sphere>(point3(0,-1000,0), 1000, ground_material));
+    auto checker = std::make_shared<checker_texture>(color(0.2, 0.3, 0.1), color(0.9, 0.9, 0.9));
+    world.add(std::make_shared<sphere>(point3(0,-1000,0), 1000, std::make_shared<lambertian>(checker)));
 
-    for (int a = -11; a < 11; a++) {
-        for (int b = -11; b < 11; b++) {
+    for (int a = -4; a < 4; a++) {
+        for (int b = -4; b < 4; b++) {
             auto choose_mat = random_double();
             point3 center(a + 0.9*random_double(), 0.2, b + 0.9*random_double());
 

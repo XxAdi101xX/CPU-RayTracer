@@ -20,6 +20,7 @@ set ( SRC
     src/camera.h
     src/aabb.h
     src/bvh.h
+    src/texture.h
     src/main.cpp
 )
 
