@@ -21,6 +21,7 @@ set ( SRC
     src/aabb.h
     src/bvh.h
     src/texture.h
+    src/perlin.h
     src/main.cpp
 )
 
