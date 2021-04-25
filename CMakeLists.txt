@@ -22,6 +22,7 @@ set ( SRC
     src/bvh.h
     src/texture.h
     src/perlin.h
+    src/aarect.h
     src/main.cpp
 )
 
