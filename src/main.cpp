@@ -6,6 +6,7 @@
 #include "material.h"
 #include "moving_sphere.h"
 #include "aarect.h"
+#include "box.h"
 
 #include <iostream>
 
@@ -126,6 +127,28 @@ hittable_list simple_light() {
     return objects;
 }
 
+hittable_list cornell_box() {
+    hittable_list objects;
+
+    auto red   = std::make_shared<lambertian>(color(.65, .05, .05));
+    auto white = std::make_shared<lambertian>(color(.73, .73, .73));
+    auto green = std::make_shared<lambertian>(color(.12, .45, .15));
+    auto light = std::make_shared<diffuse_light>(color(15, 15, 15));
+
+    objects.add(std::make_shared<yz_rect>(0, 555, 0, 555, 555, green));
+    objects.add(std::make_shared<yz_rect>(0, 555, 0, 555, 0, red));
+    objects.add(std::make_shared<xz_rect>(213, 343, 227, 332, 554, light));
+    objects.add(std::make_shared<xz_rect>(0, 555, 0, 555, 0, white));
+    objects.add(std::make_shared<xz_rect>(0, 555, 0, 555, 555, white));
+    objects.add(std::make_shared<xy_rect>(0, 555, 0, 555, 555, white));
+
+    objects.add(std::make_shared<box>(point3(130, 0, 65), point3(295, 165, 230), white));
+    objects.add(std::make_shared<box>(point3(265, 0, 295), point3(430, 330, 460), white));
+
+
+    return objects;
+}
+
 int main() {
     // Image
     auto aspect_ratio = 16.0 / 9.0;
@@ -142,7 +165,7 @@ int main() {
     auto aperture = 0.0;
     color background(0,0,0);
 
-    switch (5) { // can change this to render different scenes
+    switch (6) { // can change this to render different scenes
         default:
         case 1:
             world = random_scene();
@@ -181,6 +204,16 @@ int main() {
             lookfrom = point3(26,3,6);
             lookat = point3(0,2,0);
             vfov = 20.0;
+            break;
+        case 6:
+            world = cornell_box();
+            aspect_ratio = 1.0;
+            image_width = 600;
+            samples_per_pixel = 200;
+            background = color(0,0,0);
+            lookfrom = point3(278, 278, -800);
+            lookat = point3(278, 278, 0);
+            vfov = 40.0;
             break;
     }
 

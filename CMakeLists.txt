@@ -23,6 +23,7 @@ set ( SRC
     src/texture.h
     src/perlin.h
     src/aarect.h
+    src/box.h
     src/main.cpp
 )
 
